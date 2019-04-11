@@ -1,0 +1,4 @@
+<form [ngFormOptions]="{updateOn: 'blur'}" #form="ngForm" (ngSubmit)="onSubmit(form)" novalidate>
+  <ns-schema-form-items [schema]="schema" [model]="model" [items]="schema.items" [formState]="formState"></ns-schema-form-items>
+  <ion-button type="submit">OK</ion-button>
+</form>

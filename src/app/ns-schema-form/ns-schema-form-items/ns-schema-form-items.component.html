@@ -1,0 +1,40 @@
+<ng-container *ngFor="let item of items; index as i;">
+  <div *ngIf="item.component != 'array'">
+    <ion-item>
+      <ion-label>{{ item.title }}</ion-label>
+      <ng-container [ngSwitch]="item.component">
+
+        <ng-container *ngSwitchCase="'textarea'">
+          <ion-textarea [name]="item.name" [ngModel]="getItemValue(item)" (ngModelChange)="setItemValue(item, $event)"
+            [ngModelOptions]="{updateOn:'submit'}" [nsSchemaFormItem]="item" [schema]="schema" [model]="model">
+          </ion-textarea>
+        </ng-container>
+
+        <ng-container *ngSwitchCase="'date'">
+          <ion-input type="date" [name]="item.name" [ngModel]="getItemValue(item)"
+            (ngModelChange)="setItemValue(item, $event)" [ngModelOptions]="{updateOn:'submit'}"
+            [nsSchemaFormItem]="item" [schema]="schema" [model]="model">
+          </ion-input>
+        </ng-container>
+
+        <ng-container *ngSwitchCase="'number'">
+          <ion-input type="number" [name]="item.name" [ngModel]="getItemValue(item)"
+            (ngModelChange)="setItemValue(item, $event)" [ngModelOptions]="{updateOn:'submit'}"
+            [step]="item.step || 'any'"></ion-input>
+        </ng-container>
+
+        <ng-container *ngSwitchCase="'text'">
+          <ion-input type="text" [name]="item.name" [ngModel]="getItemValue(item)"
+            (ngModelChange)="setItemValue(item, $event)"></ion-input>
+        </ng-container>
+
+      </ng-container>
+    </ion-item>
+  </div>
+  <!-- <div *ngIf="item.component == 'array'">
+    <ng-container *ngFor="let rows of getItemValue(item); index as i;">
+      <ns-schema-form-items [schema]="schema" [model]="model" [items]="item.items" [formState]="formState">
+      </ns-schema-form-items>
+    </ng-container>
+  </div> -->
+</ng-container>

@@ -5,12 +5,14 @@ import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 
 import { HomePage } from './home.page';
+import { NsSchemaFormModule } from '../ns-schema-form/ns-schema-form.module';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
+    NsSchemaFormModule,
     RouterModule.forChild([
       {
         path: '',
