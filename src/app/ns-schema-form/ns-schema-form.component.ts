@@ -30,9 +30,6 @@ export class NsSchemaFormComponent implements OnInit {
 
   ngOnInit() {
     this.initForm();
-    //console.log(this.form);
-
-    //console.log(this.getFormItem('lang'))
   }
 
   initForm(): void {
@@ -100,7 +97,7 @@ export class NsSchemaFormComponent implements OnInit {
 
   setErrors(errors: IValidationError[]): void {
     for (const controlName in this.formEl.controls) {
-      let formItem:any = this.getFormItem(controlName);
+      let formItem: any = this.getFormItem(controlName);
       formItem.state = {
         errors: [],
         classNames: {
@@ -112,7 +109,7 @@ export class NsSchemaFormComponent implements OnInit {
     }
 
     errors.forEach(error => {
-      let formItem:any = this.getFormItem(error.property);
+      let formItem: any = this.getFormItem(error.property);
       if (formItem) {
         formItem.state.errors.push(error);
       }
@@ -121,7 +118,7 @@ export class NsSchemaFormComponent implements OnInit {
     for (const controlName in this.formEl.controls) {
       const control: AbstractControl = this.formEl.controls[controlName];
       control.updateValueAndValidity({ emitEvent: true });
-      let formItem:any = this.getFormItem(controlName);
+      let formItem: any = this.getFormItem(controlName);
       if (!formItem.state.errors.length)
         continue;
 

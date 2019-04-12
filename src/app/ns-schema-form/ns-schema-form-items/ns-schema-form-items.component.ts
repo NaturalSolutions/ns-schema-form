@@ -20,9 +20,7 @@ export class NsSchemaFormItemsComponent implements OnInit {
 
   constructor() { }
 
-  ngOnInit() {
-    console.log(this.items);
-  }
+  ngOnInit() { }
 
   getItemValue(item: any): any {
     let val: any = _.get(this.model, item.name);
