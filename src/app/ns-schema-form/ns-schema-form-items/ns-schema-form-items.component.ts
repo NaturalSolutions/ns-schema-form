@@ -13,25 +13,27 @@ import { IValidationError } from '../ns-schema.service';
 })
 export class NsSchemaFormItemsComponent implements OnInit {
 
-  @Input('schema') schema: any;
+  @Input('form') form: any;
   @Input('model') model: any;
   @Input('items') items: any;
   @Input('formState') formState: any;
 
   constructor() { }
 
-  ngOnInit() { }
+  ngOnInit() {
+    console.log(this.items);
+  }
 
   getItemValue(item: any): any {
     let val: any = _.get(this.model, item.name);
-    if (item.editor == 'date') {
+    if (item.component == 'date') {
       return moment(val).format('YYYY-MM-DD')
     }
     return _.get(this.model, item.name);
   }
 
   setItemValue(item: any, value: any): void {
-    if (item.editor == 'date') {
+    if (item.component == 'date') {
       value = new Date(value);
     }
     _.set(this.model, item.name, value);

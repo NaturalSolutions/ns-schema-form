@@ -30,14 +30,20 @@ export class HomePage {
       title: 'Longitude',
       component: 'number'
     }, {
-      component: 'array',
+      component: 'subforms',
       title: 'Translations',
       name: 'translations',
-      items: [{
-        name: 'lang'
-      }, {
-        name: 'title'
-      }]
+      subformsOf: {
+        items: [{
+          title: 'Lang',
+          name: 'lang',
+          component: 'text'
+        }, {
+          title: 'Title',
+          name: 'title',
+          component: 'text'
+        }]
+      }
     }]
   }
   model: any = {

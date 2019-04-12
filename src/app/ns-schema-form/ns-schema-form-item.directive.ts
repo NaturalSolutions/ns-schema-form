@@ -9,7 +9,7 @@ import * as moment from 'moment';
 export class NsSchemaFormItemDirective implements OnInit {
 
   @Input('nsSchemaFormItem') item: any;
-  @Input('schema') schema: any;
+  @Input('form') form: any;
   @Input('model') model: any;
 
   /* @HostBinding('class')

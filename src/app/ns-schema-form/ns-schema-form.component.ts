@@ -19,37 +19,75 @@ export class NsSchemaFormComponent implements OnInit {
   @Input('model') model: any;
   @Input('validation') validation: any;
 
-  @ViewChild('form') form: NgForm;
+  @ViewChild('formEl') formEl: NgForm;
 
   formState: any = {};
+  form: any;
 
   constructor(
     private schemasSrv: NsSchemaService
   ) { }
 
   ngOnInit() {
-    
+    this.initForm();
+    //console.log(this.form);
+
+    //console.log(this.getFormItem('lang'))
+  }
+
+  initForm(): void {
+    this.form = _.cloneDeep(this.schema);
+
+    let parse: any = (items) => {
+      _.forEach(items, item => {
+        if (item.component == 'subforms') {
+          item.subforms = [];
+          let data: any[] = _.get(this.model, item.name);
+          for (let i = 0; i < data.length; i++) {
+            let subform: any = _.cloneDeep(item.subformsOf);
+            subform.items = subform.items.map(subformItem => {
+              return Object.assign(subformItem, {
+                name: item.name + '.' + i + '.' + subformItem.name
+              });
+            });
+            item.subforms.push(subform);
+          }
+        }
+        for (let propName in item) {
+          if (_.isObjectLike(item[propName])) {
+            parse(item[propName]);
+          }
+        }
+      });
+    }
+
+    parse(this.form.items);
   }
 
   onSubmit(): void {
     this.validate()
   }
 
-  /* getFormItem(name): any {
+  getFormItem(name): any {
     let parse: any = (items) => {
       for (let index = 0; index < items.length; index++) {
         const item = items[index];
-        if (item.items) {
-          return parse(item.items);
-        }
         if (item.name == name) {
           return item;
+        }
+        for (let propName in item) {
+          if (_.isObjectLike(item[propName])) {
+            let result = parse(item[propName])
+            if (result) {
+              return result;
+            }
+          }
         }
       }
     }
 
-    return parse(this.schema.items);
-  } */
+    return parse(this.form.items);
+  }
 
   validate(): void {
     //let dataToSend: any = BSON.EJSON.serialize(this.dataModel);
@@ -61,7 +99,7 @@ export class NsSchemaFormComponent implements OnInit {
   }
 
   setErrors(errors: IValidationError[]): void {
-    for (const controlName in this.form.controls) {
+    for (const controlName in this.formEl.controls) {
       this.formState[controlName] = {
         errors: [],
         classNames: {
@@ -78,8 +116,8 @@ export class NsSchemaFormComponent implements OnInit {
       }
     });
 
-    for (const controlName in this.form.controls) {
-      const control: AbstractControl = this.form.controls[controlName];
+    for (const controlName in this.formEl.controls) {
+      const control: AbstractControl = this.formEl.controls[controlName];
       control.updateValueAndValidity({ emitEvent: true });
       if (!this.formState[controlName].errors.length)
         continue;
