@@ -80,7 +80,20 @@ export class HomePage {
             }
           }
         }
-      }
+      },
+      "translations": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "lang": {
+              "type": "string",
+              "minLength": 2,
+              "maxLength": 2
+            }
+          }
+        }
+      },
     }
   }
 }

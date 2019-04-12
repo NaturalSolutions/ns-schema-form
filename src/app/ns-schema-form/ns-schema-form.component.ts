@@ -95,12 +95,13 @@ export class NsSchemaFormComponent implements OnInit {
     let errors: IValidationError[] = this.schemasSrv.validate(this.validation, dataToSend);
     this.setErrors(errors);
     console.log(errors);
-    console.log(this.formState);
+    console.log(this.form);
   }
 
   setErrors(errors: IValidationError[]): void {
     for (const controlName in this.formEl.controls) {
-      this.formState[controlName] = {
+      let formItem:any = this.getFormItem(controlName);
+      formItem.state = {
         errors: [],
         classNames: {
           'ion-touched': true,
@@ -111,26 +112,28 @@ export class NsSchemaFormComponent implements OnInit {
     }
 
     errors.forEach(error => {
-      if (this.formState[error.property]) {
-        this.formState[error.property].errors.push(error);
+      let formItem:any = this.getFormItem(error.property);
+      if (formItem) {
+        formItem.state.errors.push(error);
       }
     });
 
     for (const controlName in this.formEl.controls) {
       const control: AbstractControl = this.formEl.controls[controlName];
       control.updateValueAndValidity({ emitEvent: true });
-      if (!this.formState[controlName].errors.length)
+      let formItem:any = this.getFormItem(controlName);
+      if (!formItem.state.errors.length)
         continue;
 
       let errors: any = {};
-      this.formState[controlName].errors.forEach(error => {
+      formItem.state.errors.forEach(error => {
         errors[error.keyword] = error;
       });
 
       control.setErrors(errors, { emitEvent: true });
       control.markAsTouched({ onlySelf: false });
       control.markAsDirty({ onlySelf: false });
-      Object.assign(this.formState[controlName].classNames, {
+      Object.assign(formItem.state.classNames, {
         'ion-valid': control.valid,
         'ion-invalid': control.invalid
       });

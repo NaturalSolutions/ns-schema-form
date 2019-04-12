@@ -1,6 +1,6 @@
 <ng-container *ngFor="let item of items; index as i;">
   <div *ngIf="item.component != 'subforms'">
-    <ion-item>
+    <ion-item [ngClass]="item.state?.classNames">
       <ion-label>{{ item.title }}</ion-label>
       <ng-container [ngSwitch]="item.component">
 
@@ -29,6 +29,11 @@
         </ng-container>
 
       </ng-container>
+    </ion-item>
+    <ion-item class="item-error" *ngFor="let error of item.state?.errors;">
+      <ion-label text-wrap>
+        {{ error.message }}
+      </ion-label>
     </ion-item>
   </div>
   <div *ngIf="item.component == 'subforms'">
